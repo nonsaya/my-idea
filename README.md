@@ -100,15 +100,23 @@ python3 create_splash.py --text "My Radio" --output " splash.bmp"
 
 ### 複数のファイル名パターンを一度に作成する
 
+**方法1: 基本的な4パターン**
 ```bash
 ./create_edge_tx_splash.sh "My Radio"
 ```
 
-このスクリプトは、以下の4つのパターンでファイルを作成します：
-- ` splash.bmp`（先頭スペース付きBMP - 最も一般的）
-- `splash.bmp`（スペースなしBMP）
-- ` splash.png`（先頭スペース付きPNG）
-- `splash.png`（スペースなしPNG）
+**方法2: 全バリエーション（RGB形式とグレースケール形式）**
+```bash
+./create_all_variants.sh "My Radio"
+```
+
+このスクリプトは、`splash_variants/`フォルダに以下のファイルを作成します：
+- RGB形式のBMP（先頭スペース付き/なし）
+- グレースケール形式のBMP（先頭スペース付き/なし）
+- PNG形式（RGB/グレースケール）
+- 大文字ファイル名（SPLASH.BMP）
+
+**重要**: `splash_variants/`フォルダは作業用です。実際にEdgeTXで使用するには、**SDカードの`SPLASH`フォルダにファイルをコピー**してください。
 
 **注意事項**:
 - `SPLASH`フォルダが存在しない場合は、SDカードのルートに手動で作成してください
