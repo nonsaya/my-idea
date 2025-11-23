@@ -57,9 +57,21 @@ def create_splash_screen(width=212, height=64, text="EdgeTX", bg_color="black", 
     text_color_value = 255 if text_color == "white" else 0
     draw.text((x, y), text, fill=text_color_value, font=font)
     
-    # BMP形式で保存（EdgeTX互換形式）
-    # モノクロ（1ビット）または8ビットグレースケールで保存
-    img.save(output_file, "BMP")
+    # ファイル形式を自動検出（拡張子から判定）
+    file_ext = os.path.splitext(output_file)[1].lower()
+    if file_ext == '.png':
+        # PNG形式で保存（EdgeTXもPNG形式をサポート）
+        img.save(output_file, "PNG")
+    elif file_ext == '.bmp':
+        # BMP形式で保存（EdgeTX互換形式）
+        # モノクロ（1ビット）または8ビットグレースケールで保存
+        img.save(output_file, "BMP")
+    else:
+        # 拡張子がない、または不明な場合はPNG形式で保存
+        if not file_ext:
+            output_file = output_file + '.png'
+        img.save(output_file, "PNG")
+        print(f"注意: 拡張子が不明なため、PNG形式で保存しました")
     
     print(f"スプラッシュスクリーンを作成しました: {output_file}")
     print(f"サイズ: {width}x{height}ピクセル")
@@ -73,7 +85,8 @@ def main():
     parser.add_argument('--text', type=str, default='EdgeTX', help='表示するテキスト（デフォルト: EdgeTX）')
     parser.add_argument('--bg-color', type=str, default='black', choices=['black', 'white'], help='背景色（デフォルト: black）')
     parser.add_argument('--text-color', type=str, default='white', choices=['black', 'white'], help='テキスト色（デフォルト: white）')
-    parser.add_argument('--output', type=str, default='splash.bmp', help='出力ファイル名（デフォルト: splash.bmp）')
+    parser.add_argument('--output', type=str, default='splash.png', help='出力ファイル名（デフォルト: splash.png、.bmpまたは.png形式）')
+    parser.add_argument('--format', type=str, choices=['png', 'bmp'], help='出力形式を明示的に指定（デフォルト: 拡張子から自動判定）')
     parser.add_argument('--mono', action='store_true', help='モノクロスクリーン用（128x64）')
     
     args = parser.parse_args()
@@ -83,13 +96,19 @@ def main():
         args.width = 128
         args.height = 64
     
+    # フォーマットが明示的に指定された場合、拡張子を変更
+    output_file = args.output
+    if args.format:
+        base_name = os.path.splitext(output_file)[0]
+        output_file = f"{base_name}.{args.format}"
+    
     create_splash_screen(
         width=args.width,
         height=args.height,
         text=args.text,
         bg_color=args.bg_color,
         text_color=args.text_color,
-        output_file=args.output
+        output_file=output_file
     )
 
 
