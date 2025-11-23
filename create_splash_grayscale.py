@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
-EdgeTXスプラッシュスクリーン作成ツール
+EdgeTXスプラッシュスクリーン作成ツール（グレースケール版）
 
-EdgeTX対応のスプラッシュスクリーン画像を生成します。
-対応サイズ:
-- 212x64ピクセル (カラースクリーン対応)
-- 128x64ピクセル (モノクロスクリーン)
+EdgeTX 2.11.0用に、グレースケール形式でスプラッシュスクリーンを作成します。
 """
 
 from PIL import Image, ImageDraw, ImageFont
@@ -14,9 +11,9 @@ import sys
 import os
 
 
-def create_splash_screen(width=212, height=64, text="EdgeTX", bg_color="black", text_color="white", output_file="splash.bmp"):
+def create_splash_screen_grayscale(width=212, height=64, text="EdgeTX", bg_color="black", text_color="white", output_file="splash.bmp"):
     """
-    スプラッシュスクリーン画像を作成
+    スプラッシュスクリーン画像を作成（グレースケール版）
     
     Args:
         width: 画像の幅（デフォルト: 212）
@@ -26,10 +23,8 @@ def create_splash_screen(width=212, height=64, text="EdgeTX", bg_color="black", 
         text_color: テキスト色（デフォルト: "white"）
         output_file: 出力ファイル名（デフォルト: "splash.bmp"）
     """
-    # 画像を作成
-    # EdgeTX 2.11.0では、RGB形式またはグレースケール形式をサポート
-    # まずRGB形式で試す（より互換性が高い可能性）
-    img = Image.new('RGB', (width, height), color=(0, 0, 0) if bg_color == "black" else (255, 255, 255))
+    # 画像を作成（グレースケールモード）
+    img = Image.new('L', (width, height), color=0 if bg_color == "black" else 255)
     draw = ImageDraw.Draw(img)
     
     # フォントのサイズを計算（画像サイズに応じて調整）
@@ -55,44 +50,33 @@ def create_splash_screen(width=212, height=64, text="EdgeTX", bg_color="black", 
     y = (height - text_height) // 2
     
     # テキストを描画
-    # RGB形式の場合、色はタプルで指定
-    text_color_value = (255, 255, 255) if text_color == "white" else (0, 0, 0)
+    text_color_value = 255 if text_color == "white" else 0
     draw.text((x, y), text, fill=text_color_value, font=font)
     
     # ファイル形式を自動検出（拡張子から判定）
     file_ext = os.path.splitext(output_file)[1].lower()
     if file_ext == '.png':
-        # PNG形式で保存
-        # EdgeTXはPNG形式をサポートしていますが、BMP形式の方が互換性が高いです
         img.save(output_file, "PNG")
     elif file_ext == '.bmp':
-        # BMP形式で保存（EdgeTX推奨形式）
-        # EdgeTX 2.11.0では、RGB形式のBMPもサポートされている可能性が高い
-        # まずRGB形式で保存を試す
         img.save(output_file, "BMP")
-        
-        # グレースケール形式も試せるように、別の関数を用意
-        # 必要に応じて、グレースケール変換版も作成可能
     else:
-        # 拡張子がない、または不明な場合はBMP形式で保存（EdgeTX推奨）
         if not file_ext:
             output_file = output_file + '.bmp'
         img.save(output_file, "BMP")
-        print(f"注意: 拡張子が不明なため、BMP形式で保存しました（EdgeTX推奨）")
     
-    print(f"スプラッシュスクリーンを作成しました: {output_file}")
+    print(f"スプラッシュスクリーンを作成しました（グレースケール）: {output_file}")
     print(f"サイズ: {width}x{height}ピクセル")
     return output_file
 
 
 def main():
-    parser = argparse.ArgumentParser(description='EdgeTXスプラッシュスクリーン作成ツール')
+    parser = argparse.ArgumentParser(description='EdgeTXスプラッシュスクリーン作成ツール（グレースケール版）')
     parser.add_argument('--width', type=int, default=212, help='画像の幅（デフォルト: 212）')
     parser.add_argument('--height', type=int, default=64, help='画像の高さ（デフォルト: 64）')
     parser.add_argument('--text', type=str, default='EdgeTX', help='表示するテキスト（デフォルト: EdgeTX）')
     parser.add_argument('--bg-color', type=str, default='black', choices=['black', 'white'], help='背景色（デフォルト: black）')
     parser.add_argument('--text-color', type=str, default='white', choices=['black', 'white'], help='テキスト色（デフォルト: white）')
-    parser.add_argument('--output', type=str, default='splash.bmp', help='出力ファイル名（デフォルト: splash.bmp、.bmpまたは.png形式）')
+    parser.add_argument('--output', type=str, default='splash.bmp', help='出力ファイル名（デフォルト: splash.bmp）')
     parser.add_argument('--format', type=str, choices=['png', 'bmp'], help='出力形式を明示的に指定（デフォルト: 拡張子から自動判定）')
     parser.add_argument('--mono', action='store_true', help='モノクロスクリーン用（128x64）')
     
@@ -109,7 +93,7 @@ def main():
         base_name = os.path.splitext(output_file)[0]
         output_file = f"{base_name}.{args.format}"
     
-    create_splash_screen(
+    create_splash_screen_grayscale(
         width=args.width,
         height=args.height,
         text=args.text,
