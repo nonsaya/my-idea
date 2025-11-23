@@ -18,37 +18,37 @@ pip install -r requirements.txt
 ### 基本的な使用方法（デフォルト: 212x64ピクセル）
 
 ```bash
-python create_splash.py
+python3 create_splash.py
 ```
 
 ### カスタムテキストを指定
 
 ```bash
-python create_splash.py --text "My Radio"
+python3 create_splash.py --text "My Radio"
 ```
 
 ### モノクロスクリーン用（128x64ピクセル）
 
 ```bash
-python create_splash.py --mono
+python3 create_splash.py --mono
 ```
 
 ### カスタムサイズを指定
 
 ```bash
-python create_splash.py --width 212 --height 64 --text "EdgeTX"
+python3 create_splash.py --width 212 --height 64 --text "EdgeTX"
 ```
 
 ### 白背景・黒文字
 
 ```bash
-python create_splash.py --bg-color white --text-color black
+python3 create_splash.py --bg-color white --text-color black
 ```
 
 ### 出力ファイル名を指定
 
 ```bash
-python create_splash.py --output my_splash.bmp
+python3 create_splash.py --output my_splash.bmp
 ```
 
 ## オプション
