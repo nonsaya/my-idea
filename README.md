@@ -82,10 +82,14 @@ python3 create_splash.py --text "My Radio" --output " splash.bmp"
 
 ## EdgeTXへの適用方法
 
+**重要**: EdgeTXの設定メニューで「Splash Screen」という項目がありますが、これが起動時に表示される画像を指しているか確認してください。
+設定メニューに「Boot Screen」や「Startup Screen」などの別の項目がある可能性もあります。
+
 ### 方法1: 自動認識タイプ（設定メニューにファイル選択項目がない場合）
 
 1. SDカードをトランスミッターに挿入し、PCで読み込む
 2. SDカードのルートに`SPLASH`フォルダを作成（存在しない場合）
+   - **注意**: フォルダ名が`SPLASH`で正しいか確認してください（`BOOT`や`IMAGES`などの可能性も）
 3. 生成された画像ファイルを`SPLASH`フォルダにコピー
    - **重要**: ファイル名は` splash.bmp`（先頭にスペース）である必要があります
    - 複数のファイル名パターンを試す場合は、`create_edge_tx_splash.sh`スクリプトを使用してください
