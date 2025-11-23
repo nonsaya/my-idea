@@ -51,16 +51,22 @@ python3 create_splash.py --bg-color white --text-color black
 python3 create_splash.py --output my_splash.png
 ```
 
-### PNG形式で出力（デフォルト）
+### BMP形式で出力（推奨・デフォルト）
 
 ```bash
-python3 create_splash.py --text "EdgeTX" --output splash.png
+python3 create_splash.py --text "EdgeTX" --output splash.bmp
 ```
 
-### BMP形式で出力
+### PNG形式で出力
 
 ```bash
-python3 create_splash.py --text "EdgeTX" --format bmp --output splash.bmp
+python3 create_splash.py --text "EdgeTX" --format png --output splash.png
+```
+
+### ファイル名に先頭スペースを付ける（EdgeTXの一部のバージョンで必要）
+
+```bash
+python3 create_splash.py --text "My Radio" --output " splash.bmp"
 ```
 
 ## オプション
@@ -70,7 +76,7 @@ python3 create_splash.py --text "EdgeTX" --format bmp --output splash.bmp
 - `--text`: 表示するテキスト（デフォルト: "EdgeTX"）
 - `--bg-color`: 背景色（black/white、デフォルト: black）
 - `--text-color`: テキスト色（black/white、デフォルト: white）
-- `--output`: 出力ファイル名（デフォルト: splash.png、.bmpまたは.png形式）
+- `--output`: 出力ファイル名（デフォルト: splash.bmp、.bmpまたは.png形式）
 - `--format`: 出力形式を明示的に指定（png/bmp、デフォルト: 拡張子から自動判定）
 - `--mono`: モノクロスクリーン用（128x64）を指定
 
@@ -78,16 +84,23 @@ python3 create_splash.py --text "EdgeTX" --format bmp --output splash.bmp
 
 1. SDカードをトランスミッターに挿入し、PCで読み込む
 2. SDカードのルートに`SPLASH`フォルダを作成（存在しない場合）
-3. 生成された画像ファイル（BMPまたはPNG）を`SPLASH`フォルダにコピー
-4. EdgeTXの設定メニューからスプラッシュスクリーンを選択
+3. 生成された画像ファイルを`SPLASH`フォルダにコピー
+   - **重要**: ファイル名は` splash.bmp`（先頭にスペース）または` splash.png`である必要があります
+   - または、EdgeTXの設定メニューでファイルを選択できる場合があります
+4. EdgeTXの設定メニュー（RADIO SETUP → Splash Screen）からスプラッシュスクリーンを選択
+   - ファイル一覧から作成したファイルを選択
 5. トランスミッターを再起動して確認
 
-**注意**: `SPLASH`フォルダが存在しない場合は、SDカードのルートに手動で作成してください。
+**注意事項**:
+- `SPLASH`フォルダが存在しない場合は、SDカードのルートに手動で作成してください
+- EdgeTXのバージョンによっては、BMP形式の方が互換性が高い場合があります
+- ファイル名に先頭スペースが必要な場合があります（例：` splash.bmp`）
+- 設定メニューでスプラッシュスクリーンを選択しないと、デフォルトのものが表示されます
 
 ## 注意事項
 
 - EdgeTXのスプラッシュスクリーンは通常モノクロまたはグレースケール形式です
 - カラースクリーン対応のトランスミッターは212x64ピクセル
 - モノクロスクリーンのトランスミッターは128x64ピクセル
-- PNG形式とBMP形式の両方をサポートしています（PNG推奨）
+- PNG形式とBMP形式の両方をサポートしています（BMP形式推奨、互換性が高い）
 - `SPLASH`フォルダはSDカードのルートに手動で作成する必要があります
